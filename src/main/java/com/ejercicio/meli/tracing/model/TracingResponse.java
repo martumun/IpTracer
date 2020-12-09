@@ -6,14 +6,14 @@ import java.util.List;
 public class TracingResponse {
     private final String countryName;
     private final String isoCode;
-    private final List<LocalTime> currentTimes;
+    private final List<String> currentTimes;
     private final double distanceToBuenosAires;
     private final String currency;
     private final Double euroExchangeRate;
 
     public TracingResponse(String countryName,
                            String isoCode,
-                           List<LocalTime> currentTimes,
+                           List<String> currentTimes,
                            double distanceToBuenosAires,
                            String currency,
                            Double euroExchangeRate) {
@@ -33,7 +33,7 @@ public class TracingResponse {
         return isoCode;
     }
 
-    public List<LocalTime> getCurrentTimes() {
+    public List<String> getCurrentTimes() {
         return currentTimes;
     }
 

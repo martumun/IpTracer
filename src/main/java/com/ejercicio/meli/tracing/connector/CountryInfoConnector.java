@@ -7,6 +7,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,8 +19,11 @@ public class CountryInfoConnector {
     @Autowired
     private ObjectMapper mapper;
 
+    @Value("${restcountries.path}")
+    private String host;
+
     /**
-     * Get's country information
+     * Get country information
      *
      * @param countryCode country's 3 letter code
      * @return An object containing this country's languages, timezones and location (latitude & longitude)
@@ -28,7 +32,7 @@ public class CountryInfoConnector {
     public CountryInfo getCountryInfo(String countryCode) {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
 
-            HttpGet request = new HttpGet("https://restcountries.eu" + String.format(COUNTRY_INFO_PATH, countryCode));
+            HttpGet request = new HttpGet(host + String.format(COUNTRY_INFO_PATH, countryCode));
 
             CountryInfo response = client.execute(request, httpResponse ->
                     mapper.readValue(httpResponse.getEntity().getContent(), CountryInfo.class));

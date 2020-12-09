@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,14 +32,14 @@ public class TracingService {
         CurrencyInformation currencyInformation;
         String currencyCode;
         IpLocation ipLocation = ipTracerConnector.getIpLocation(ip);
-        CountryInfo countryInfo = countryInfoConnector.getCountryInfo(ipLocation.getCountryCode3());
+        CountryInfo countryInfo = countryInfoConnector.getCountryInfo(ipLocation.getCountryCode3().isEmpty() ? ipLocation.getCountryCode() : ipLocation.getCountryCode3());
         List<CountryInfoCurrency> currencies = countryInfo.getCurrencies();
 
         if (!currencies.isEmpty()) {
             currencyCode = currencies.get(0).getCode();
             currencyInformation = currencyInfoConnector.getCurrencyInfo(currencyCode);
         } else {
-            throw new RuntimeException("adsd");
+            throw new RuntimeException("Could not find any currencies");
         }
 
         double distanceToBuenosAires = getDistanceToBuenosAires(countryInfo.getLatlng());
@@ -60,8 +61,10 @@ public class TracingService {
         }
     }
 
-    private List<LocalTime> getCurrentTimes(List<String> timezones) {
-        return timezones.stream().map(t -> LocalTime.now(ZoneId.of(t))).collect(Collectors.toList());
+    private List<String> getCurrentTimes(List<String> timezones) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        return timezones.stream().map(t -> LocalTime.now(ZoneId.of(t)).format(dateTimeFormatter)).collect(Collectors.toList());
     }
 
     private double getDistanceToBuenosAires(List<Integer> latlng) {

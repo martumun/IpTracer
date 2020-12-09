@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ejercicio.meli.tracing.util.FieldsLiterals.COUNTRY_NAME;
+import static com.ejercicio.meli.tracing.util.FieldsLiterals.DISTANCE;
 import static com.mongodb.client.model.Filters.eq;
 
 @Service
@@ -33,7 +35,7 @@ public class MongoConnector {
     }
 
     public CallsPerCountry getCalls(String countryName) {
-        Document doc = callsCollection.find(eq("countryName", countryName)).first();
+        Document doc = callsCollection.find(eq(COUNTRY_NAME, countryName)).first();
         if(doc != null) {
             try {
                 return mapper.readValue(doc.toJson(), CallsPerCountry.class);
@@ -54,7 +56,7 @@ public class MongoConnector {
     }
 
     public Double getLongestDistance() {
-        Document doc = callsCollection.find().sort(eq("distance", -1)).limit(1).first();
+        Document doc = callsCollection.find().sort(eq(DISTANCE, -1)).limit(1).first();
         if (doc != null) {
             try {
                 return mapper.readValue(doc.toJson(), CallsPerCountry.class).getDistance();
@@ -67,7 +69,7 @@ public class MongoConnector {
     }
 
     public Double getShortestDistance() {
-        Document doc = callsCollection.find().sort(eq("distance", 1)).limit(1).first();
+        Document doc = callsCollection.find().sort(eq(DISTANCE, 1)).limit(1).first();
         if (doc != null) {
             try {
                 return mapper.readValue(doc.toJson(), CallsPerCountry.class).getDistance();
