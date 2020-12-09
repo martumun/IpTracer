@@ -23,7 +23,7 @@ Response:
 ```
 
 
-**GET /tracer/stats  **
+**GET /tracer/stats**
 
 Response:  
 ```json
