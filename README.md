@@ -1,12 +1,14 @@
 # IpTracer
 Responde a 2 consultas:
 
-POST /tracer
-body: 
+**POST /tracer**  
+Body:   
 ```json
-{"ip": "85.214.132.117"}
+{
+    "ip": "85.214.132.117"
+}
 ```
-response
+Response:  
 ```json
 {
     "countryName": "Germany",
@@ -21,9 +23,9 @@ response
 ```
 
 
-GET /tracer/stats
+**GET /tracer/stats  **
 
-response:
+Response:  
 ```json
 {
 "shortestDistanceToBuenosAires": 520.3358607205181,
@@ -32,4 +34,5 @@ response:
 }
 ```
 
-Se necesita tener mongo instalado localmente ya que se utiliza para la persistencia de los datos. La app fue desarrollada en java 8 con springboot.
+Se necesita tener mongo instalado localmente ya que se utiliza para la persistencia de los datos.  
+La app fue desarrollada en java 8 con springboot.
